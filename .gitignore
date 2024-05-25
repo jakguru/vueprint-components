@@ -1,0 +1,15 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+docs/.vuepress/.cache
+docs/.vuepress/.temp
+docs/.vitepress/cache
+docs/.vitepress/temp
+types
+public
+.vitepress/cache
+.vitepress/dist
+docs/.vitepress/cache
+docs/.vitepress/dist
