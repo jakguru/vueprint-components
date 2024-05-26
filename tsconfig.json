@@ -28,11 +28,9 @@
     },
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "docs/**/*.ts",
-    "docs/**/*.vue",
+    "src/**/*",
+    "docs/**/*",
+    "bin/**/*",
     "vite.config.ts",
   ]
 }

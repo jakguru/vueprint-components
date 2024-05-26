@@ -46,7 +46,7 @@ export default defineConfig({
 
       footer: {
         message: 'Vueprint Components are a commercial work product released under the MIT License and is provided as-is with no warranty or guarantee of support.',
-        copyright: 'Copyright © 2024-present Jak Guru LLC'
+        copyright: "Copyright © 2024-present Jak Guru LLC",
       },
 
       outline: {

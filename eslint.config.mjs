@@ -106,7 +106,7 @@ const tsRules = {
 
 export default [
   {
-    files: ["*.ts", "*.tsx", "*.mts"],
+    files: ["**/*.ts", "**/*.tsx", "**/*.mts"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -114,12 +114,17 @@ export default [
       },
     },
     plugins: {
+      ...eslintPluginPrettierRecommended.plugins,
       "@typescript-eslint": tseslint.plugin,
+      prettier: eslintPluginPrettier,
     },
-    rules: tsRules,
+    rules: {
+      ...eslintPluginPrettierRecommended.rules,
+      ...tsRules,
+    },
   },
   {
-    files: ["*.vue"],
+    files: ["**/*.vue"],
     languageOptions: {
       parser: vueEslintParser,
       parserOptions: {
@@ -129,17 +134,20 @@ export default [
       },
     },
     plugins: {
+      ...eslintPluginPrettierRecommended.plugins,
       vue: pluginVue,
       "@typescript-eslint": tseslint.plugin,
+      prettier: eslintPluginPrettier,
     },
     rules: {
       "vue/no-unused-vars": "error",
       "@typescript-eslint/no-unused-vars": "error",
+      ...eslintPluginPrettierRecommended.rules,
       ...tsRules,
     },
   },
   {
-    files: ["*.js", "*.jsx", "*.ts", "*.tsx", "*.vue", "*.mts"],
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.vue", "**/*.mts"],
     plugins: {
       prettier: eslintPluginPrettier,
     },
@@ -149,6 +157,6 @@ export default [
     },
   },
   {
-    ignores: ["node_modules"],
+    ignores: ["node_modules", "docs/.vitepress/cache", "docs/.vitepress/dist"],
   },
 ];
