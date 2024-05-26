@@ -1,16 +1,16 @@
 /**
  * @module @jakguru/vueprint-components
  */
-import { App } from 'vue'
-import * as components from './components'
+import { App } from "vue";
+import * as components from "./components";
 
-function install (app: App) {
+function install(app: App) {
   for (const key in components) {
     // @ts-expect-error
-    app.component(key, components[key])
+    app.component(key, components[key]);
   }
 }
 
-export default { install }
+export default { install };
 
-export * from './components'
+export * from "./components";
