@@ -6,8 +6,8 @@ export default [
         text: "Fields",
         items: [
           {
-            text: "VPPassword",
-            link: "/components/fields/VPPassword",
+            text: "VPPasswordField",
+            link: "/components/fields/VPPasswordField",
           },
         ],
         collapsed: true,
