@@ -110,7 +110,8 @@ export default [
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: "./tsconfig.json",
+        project: true,
+        extraFileExtensions: [".vue"],
       },
     },
     plugins: {
@@ -130,7 +131,7 @@ export default [
       parserOptions: {
         parser: tseslint.parser,
         extraFileExtensions: [".vue"],
-        project: "./tsconfig.json",
+        project: true,
       },
     },
     plugins: {
