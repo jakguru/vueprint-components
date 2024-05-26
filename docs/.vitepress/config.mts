@@ -1,6 +1,6 @@
 import { defineConfig } from "vitepress";
-
 import { resolve } from "path";
+import sidebar from './sidebar'
 
 export default defineConfig({
   base: "/vueprint/",
@@ -126,6 +126,7 @@ export default defineConfig({
         text: "Introduction",
         items: [{ text: "Getting Started", link: "/guide/" }],
       },
+      ...sidebar,
       {
         text: "Bugs & Issues",
         link: "https://github.com/jakguru/vueprint-components/issues",

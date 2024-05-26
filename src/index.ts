@@ -1,7 +1,7 @@
 /**
  * @module @jakguru/vueprint-components
  */
-import { App } from "vue";
+import type { App } from "vue";
 import * as components from "./components";
 
 function install(app: App) {
