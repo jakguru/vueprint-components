@@ -1,9 +1,10 @@
 import { defineConfig } from "vitepress";
+import { transformAssetUrls } from "vite-plugin-vuetify";
 import { resolve } from "path";
-import sidebar from './sidebar'
+import sidebar from "./sidebar";
 
 export default defineConfig({
-  base: "/vueprint/",
+  base: "/vueprint-components/",
   lang: "en-US",
   title: "VuePrint Components",
   description: "Reusable Vue Components for VuePrint",
@@ -107,7 +108,7 @@ export default defineConfig({
         href: "/favicons/favicon-16x16.png",
       },
     ],
-    ["link", { rel: "manifest", href: "/favicons/site.webmanifest" }],
+    // ["link", { rel: "manifest", href: "/favicons/site.webmanifest" }],
     [
       "link",
       {
@@ -148,7 +149,7 @@ export default defineConfig({
     },
 
     outline: {
-      level: [2, 3],
+      level: [2, 4],
     },
   },
   markdown: {
@@ -161,7 +162,12 @@ export default defineConfig({
       alias: {
         "@jakguru/vueprint-components": resolve(__dirname, "../../src"),
       },
-      dedupe: ["vue", "@jakguru/vueprint"], // avoid error when using dependencies that also use Vue
+      dedupe: ["vue", "vuetify", "@jakguru/vueprint"], // avoid error when using dependencies that also use Vue
+    },
+  },
+  vue: {
+    template: {
+      transformAssetUrls,
     },
   },
 });

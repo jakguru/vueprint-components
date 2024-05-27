@@ -24,6 +24,18 @@
     }
 
     .VPDoc.has-aside .content-container {
-        max-width: 100vw;
+        max-width: calc(100% - 256px);
+        margin: 0 0;
+    }
+
+    .demo-container {
+        display: block;
+        border: 1px solid var(--vp-c-bg-soft);
+        border-radius: 12px;
+        height: 100%;
+        background-color: var(--vp-c-bg-soft);
+        transition: border-color .25s, background-color .25s;
+
+        
     }
 }

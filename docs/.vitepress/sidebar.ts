@@ -9,6 +9,10 @@ export default [
             text: "VPPasswordField",
             link: "/components/fields/VPPasswordField",
           },
+          {
+            text: "VPTextFieldCopyable",
+            link: "/components/fields/VPTextFieldCopyable",
+          },
         ],
         collapsed: true,
       },

@@ -8,7 +8,7 @@ docs/.vuepress/.temp
 docs/.vitepress/cache
 docs/.vitepress/temp
 types
-public
+./public
 .vitepress/cache
 .vitepress/dist
 docs/.vitepress/cache

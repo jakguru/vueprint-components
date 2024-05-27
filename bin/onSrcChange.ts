@@ -7,12 +7,17 @@ import { execa } from "execa";
 import { mkdirp } from "mkdirp";
 import { parse } from "vue-docgen-api";
 import { kebabCase } from "change-case";
+import mustache from "mustache";
+
+mustache.escape = (text: string) => text;
 
 import type { DefaultTheme } from "vitepress/theme";
 
 const BASE_DIR = resolve(__dirname, "..");
 const SRC_DIR = resolve(BASE_DIR, "src");
 const DOCUMENTABLE_TYPES = ["ts", "vue", "scss"];
+
+let vueTemplateSrc: string | undefined;
 
 interface DocumentableFileInformation {
   documentable: boolean;
@@ -91,8 +96,6 @@ const recursiveBuildSidebar = async (
     const itemPath = resolve(dir, item);
     const itemStat = statSync(itemPath);
     if (itemStat.isDirectory()) {
-      // if the index.yml file exists, then { items: [ ...recursiveBuildSidebar(itemPath) ] },
-      // otherwise, ...recursiveBuildSidebar(itemPath)
       const indexYmlPath = resolve(itemPath, "index.yml");
       if (existsSync(indexYmlPath)) {
         const indexYml = yaml.parse(await readFile(indexYmlPath, "utf8"));
@@ -161,16 +164,48 @@ const getDocForTypescript = async (source: string) => {
 };
 
 const getDocForVue = async (source: string) => {
-  const info = await resolveDocumentableFileInformation(source);
-  // See https://vue-styleguidist.github.io/docs/Documenting.html#code-comments
+  if (!vueTemplateSrc) {
+    const vueTemplateSrcPath = resolve(BASE_DIR, "templates", "vue.md");
+    vueTemplateSrc = await readFile(vueTemplateSrcPath, "utf8");
+  }
+
   const componentInfo = await parse(source, {
     validExtends: () => true,
   });
-  let ret = `# ${info.title}\n\n${componentInfo.description}\n\n`;
-  ret += `## Usage\n\n`;
-  ret += `\`\`\`vue\n<template>\n  <${kebabCase(info.title)} />\n</template>\n\`\`\`\n\n`;
-  ret += `\`\`\`json\n${JSON.stringify(componentInfo, null, 2)}\n\`\`\`\n\n`;
-  return ret;
+
+  const getComponentInfoTag = (tag: string) => {
+    if (componentInfo.tags && componentInfo.tags[tag]) {
+      return componentInfo.tags[tag][0] as any;
+    }
+  };
+
+  const merge: Record<string, string> = {
+    displayName: componentInfo.displayName,
+    displayNameKebab: kebabCase(componentInfo.displayName),
+  };
+
+  if (componentInfo.description) {
+    merge.description = componentInfo.description;
+  }
+
+  const moduleInfo = getComponentInfoTag("module");
+  if (moduleInfo) {
+    merge.module = moduleInfo.description;
+  }
+  const exampleInfo = getComponentInfoTag("examples");
+  if (exampleInfo) {
+    merge.example = exampleInfo.content.replace(/\\\//g, "/");
+  } else {
+    merge.example = `<template>
+      <${merge.displayName} />
+    </template>`;
+  }
+
+  merge.example = merge.example.replace(/<template>/g, "<v-container fluid class=\"demo-container\">").replace(/<\/template>/g, "</v-container>")
+
+  merge.debug = `\`\`\`json\n${JSON.stringify(componentInfo, null, 2)}\n\`\`\`\n\n\`\`\`json\n${JSON.stringify(merge, null, 2)}\n\`\`\``;
+
+  return mustache.render(vueTemplateSrc, merge);
 };
 
 const getDocForScss = async (source: string) => {
@@ -186,6 +221,7 @@ const run = async () => {
     `export default ${JSON.stringify(sidebar, null, 2)};`,
   );
   await execa("npx", ["eslint", "--fix", sidebarPath]);
+
   const documentableFiles = await listDocumentableFiles(SRC_DIR);
   for (let i = 0; i < documentableFiles.length; i++) {
     const file = documentableFiles[i];
