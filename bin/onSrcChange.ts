@@ -204,8 +204,13 @@ const getDocForVue = async (source: string) => {
       <${merge.displayName} />
     </template>`;
   }
-
-  merge.example = merge.example.replace(/<template>/g, "<v-container fluid class=\"demo-container\">").replace(/<\/template>/g, "</v-container>")
+  merge.props = btoa(JSON.stringify(componentInfo.props || []));
+  merge.events = btoa(JSON.stringify(componentInfo.events || []));
+  merge.slots = btoa(JSON.stringify(componentInfo.slots || []));
+  merge.methods = btoa(JSON.stringify(componentInfo.methods || []));
+  merge.example = merge.example
+    .replace(/<template>/g, '<v-container fluid class="demo-container">')
+    .replace(/<\/template>/g, "</v-container>");
 
   merge.debug = `\`\`\`json\n${JSON.stringify(componentInfo, null, 2)}\n\`\`\`\n\n\`\`\`json\n${JSON.stringify(merge, null, 2)}\n\`\`\``;
 
@@ -217,14 +222,34 @@ const getDocForScss = async (source: string) => {
   return await readFile(doc, "utf8");
 };
 
-const run = async () => {
-  const sidebar: DefaultTheme.Sidebar = await recursiveBuildSidebar(SRC_DIR);
+const updateSidebar = async () => {
+  let needsUpdate = false;
   const sidebarPath = resolve(BASE_DIR, "docs", ".vitepress", "sidebar.ts");
-  await writeFile(
-    sidebarPath,
-    `export default ${JSON.stringify(sidebar, null, 2)};`,
-  );
-  await execa("npx", ["eslint", "--fix", sidebarPath]);
+  const sidebar: DefaultTheme.Sidebar = await recursiveBuildSidebar(SRC_DIR);
+  if (!existsSync(sidebarPath)) {
+    needsUpdate = true;
+  } else {
+    const current = await import(sidebarPath);
+    if (!current.default) {
+      needsUpdate = true;
+    }
+    if (!needsUpdate) {
+      const currentAsJson = JSON.stringify(current.default);
+      const sidebarAsJson = JSON.stringify(sidebar);
+      needsUpdate = currentAsJson !== sidebarAsJson;
+    }
+  }
+  if (needsUpdate) {
+    await writeFile(
+      sidebarPath,
+      `export default ${JSON.stringify(sidebar, null, 2)};`,
+    );
+    await execa("npx", ["eslint", "--fix", sidebarPath]);
+  }
+};
+
+const run = async () => {
+  updateSidebar();
 
   const documentableFiles = await listDocumentableFiles(SRC_DIR);
   for (let i = 0; i < documentableFiles.length; i++) {
@@ -250,5 +275,6 @@ const run = async () => {
 
 run().catch((error) => {
   console.error(color.red(error.message));
+  console.error(error.stack.split("\n").slice(1).join("\n"));
   process.exit(1);
 });

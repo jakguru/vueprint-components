@@ -23,6 +23,10 @@
         --vp-c-bg-soft: #000622;
     }
 
+    .VPDoc.has-aside .aside {
+        left: -256px;
+    }
+
     .VPDoc.has-aside .content-container {
         max-width: calc(100% - 256px);
         margin: 0 0;

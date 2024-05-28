@@ -73,7 +73,18 @@ export default defineComponent({
       default: "",
     },
   }),
-  emits: ["copied", "copy-failed", ...Object.keys({ ...VTextField.emits })],
+  emits: [
+    /**
+     * Emitted when the value is successfully copied to the clipboard
+     * 
+     * @property {string} value - The value that was copied
+     */
+    "copied",
+    /**
+     * Emitted when the value fails to be copied to the clipboard
+     */
+    "copy-failed",
+    ...Object.keys({ ...VTextField.emits })],
   setup(props, { emit }) {
     const value = computed(() => props.value);
     const { copy: doCopy, copied, isSupported, text } = useClipboard();

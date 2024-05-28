@@ -25,117 +25,16 @@ This component is a wrapper around the `v-text-field` component. It is recommend
 
 ### Properties
 
+<PropsTable encoded="W3sibmFtZSI6InNob3dHZW5lcmF0b3IiLCJkZXNjcmlwdGlvbiI6IldoZXRoZXIgdG8gc2hvdyB0aGUgcGFzc3dvcmQgZ2VuZXJhdG9yIGJ1dHRvbiIsInR5cGUiOnsibmFtZSI6ImJvb2xlYW4ifSwiZGVmYXVsdFZhbHVlIjp7ImZ1bmMiOmZhbHNlLCJ2YWx1ZSI6ImZhbHNlIn19LHsibmFtZSI6ImdlbmVyYXRlUGFzc3dvcmRMZW5ndGgiLCJkZXNjcmlwdGlvbiI6IlRoZSBsZW5ndGggb2YgdGhlIHBhc3N3b3JkIHRvIGdlbmVyYXRlIiwidHlwZSI6eyJuYW1lIjoibnVtYmVyIn0sImRlZmF1bHRWYWx1ZSI6eyJmdW5jIjpmYWxzZSwidmFsdWUiOiIxMiJ9fSx7Im5hbWUiOiJnZW5lcmF0ZVBhc3N3b3JkV2l0aE51bWJlcnMiLCJkZXNjcmlwdGlvbiI6IldoZXRoZXIgdG8gaW5jbHVkZSBudW1iZXJzIGluIHRoZSBnZW5lcmF0ZWQgcGFzc3dvcmQiLCJ0eXBlIjp7Im5hbWUiOiJib29sZWFuIn0sImRlZmF1bHRWYWx1ZSI6eyJmdW5jIjpmYWxzZSwidmFsdWUiOiJ0cnVlIn19LHsibmFtZSI6ImdlbmVyYXRlUGFzc3dvcmRXaXRoU3ltYm9scyIsImRlc2NyaXB0aW9uIjoiV2hldGhlciB0byBpbmNsdWRlIHN5bWJvbHMgaW4gdGhlIGdlbmVyYXRlZCBwYXNzd29yZCIsInR5cGUiOnsibmFtZSI6ImJvb2xlYW4ifSwiZGVmYXVsdFZhbHVlIjp7ImZ1bmMiOmZhbHNlLCJ2YWx1ZSI6InRydWUifX0seyJuYW1lIjoiZ2VuZXJhdGVQYXNzd29yZFdpdGhVcHBlcmNhc2UiLCJkZXNjcmlwdGlvbiI6IldoZXRoZXIgdG8gaW5jbHVkZSB1cHBlcmNhc2UgY2hhcmFjdGVycyBpbiB0aGUgZ2VuZXJhdGVkIHBhc3N3b3JkIiwidHlwZSI6eyJuYW1lIjoiYm9vbGVhbiJ9LCJkZWZhdWx0VmFsdWUiOnsiZnVuYyI6ZmFsc2UsInZhbHVlIjoidHJ1ZSJ9fSx7Im5hbWUiOiJnZW5lcmF0ZVBhc3N3b3JkRXhjbHVkaW5nU2ltaWxhckNoYXJhY3RlcnMiLCJkZXNjcmlwdGlvbiI6IldoZXRoZXIgdG8gZXhjbHVkZSBzaW1pbGFyIGNoYXJhY3RlcnMgaW4gdGhlIGdlbmVyYXRlZCBwYXNzd29yZCIsInR5cGUiOnsibmFtZSI6ImJvb2xlYW4ifSwiZGVmYXVsdFZhbHVlIjp7ImZ1bmMiOmZhbHNlLCJ2YWx1ZSI6InRydWUifX1d" />
+
 ### Events
+
+<EventsTable encoded="W3sibmFtZSI6ImdlbmVyYXRlLXBhc3N3b3JkIiwiZGVzY3JpcHRpb24iOiJFbWl0dGVkIHdoZW4gdGhlIHBhc3N3b3JkIGdlbmVyYXRvciBidXR0b24gaXMgY2xpY2tlZCJ9XQ==" />
 
 ### Slots
 
+<SlotsTable encoded="W10=" />
+
 ### Methods
 
-```json
-{
-  "displayName": "VPPasswordField",
-  "description": "The `vp-password-field` component extends the [v-text-field](https://vuetifyjs.com/en/api/v-text-field/) Vuetify component with additional functionality:\n\n* Password visibility toggle\n* Password generation button + event\n\n::: info Important Note\nThis component is a wrapper around the `v-text-field` component. It is recommended to refer to the [Vuetify documentation](https://vuetifyjs.com/en/api/v-text-field/) for more information on the available props and events.\n:::",
-  "tags": {
-    "module": [
-      {
-        "description": "@jakguru/vueprint-components/components/fields/VPPasswordField",
-        "title": "module"
-      }
-    ],
-    "examples": [
-      {
-        "title": "example",
-        "content": "<template>\n <VPPasswordField v-model=\"password\" label=\"Password\" />\n <VPPasswordField v-model=\"password\" label=\"Password with Generator Button\" show-generator />\n</template>\n\n<script setup>\n import { ref } from \"vue\";\n const password = ref(\"\");\n<\\/script>"
-      }
-    ]
-  },
-  "exportName": "default",
-  "props": [
-    {
-      "name": "showGenerator",
-      "description": "Whether to show the password generator button",
-      "type": {
-        "name": "boolean"
-      },
-      "defaultValue": {
-        "func": false,
-        "value": "false"
-      }
-    },
-    {
-      "name": "generatePasswordLength",
-      "description": "The length of the password to generate",
-      "type": {
-        "name": "number"
-      },
-      "defaultValue": {
-        "func": false,
-        "value": "12"
-      }
-    },
-    {
-      "name": "generatePasswordWithNumbers",
-      "description": "Whether to include numbers in the generated password",
-      "type": {
-        "name": "boolean"
-      },
-      "defaultValue": {
-        "func": false,
-        "value": "true"
-      }
-    },
-    {
-      "name": "generatePasswordWithSymbols",
-      "description": "Whether to include symbols in the generated password",
-      "type": {
-        "name": "boolean"
-      },
-      "defaultValue": {
-        "func": false,
-        "value": "true"
-      }
-    },
-    {
-      "name": "generatePasswordWithUppercase",
-      "description": "Whether to include uppercase characters in the generated password",
-      "type": {
-        "name": "boolean"
-      },
-      "defaultValue": {
-        "func": false,
-        "value": "true"
-      }
-    },
-    {
-      "name": "generatePasswordExcludingSimilarCharacters",
-      "description": "Whether to exclude similar characters in the generated password",
-      "type": {
-        "name": "boolean"
-      },
-      "defaultValue": {
-        "func": false,
-        "value": "true"
-      }
-    }
-  ],
-  "events": [
-    {
-      "name": "generate-password",
-      "description": "Emitted when the password generator button is clicked"
-    }
-  ],
-  "sourceFiles": [
-    "/Users/jak/Development/vueprint-components/src/components/fields/VPPasswordField.vue"
-  ]
-}
-```
-
-```json
-{
-  "displayName": "VPPasswordField",
-  "displayNameKebab": "vp-password-field",
-  "description": "The `vp-password-field` component extends the [v-text-field](https://vuetifyjs.com/en/api/v-text-field/) Vuetify component with additional functionality:\n\n* Password visibility toggle\n* Password generation button + event\n\n::: info Important Note\nThis component is a wrapper around the `v-text-field` component. It is recommended to refer to the [Vuetify documentation](https://vuetifyjs.com/en/api/v-text-field/) for more information on the available props and events.\n:::",
-  "module": "@jakguru/vueprint-components/components/fields/VPPasswordField",
-  "example": "<v-container fluid class=\"demo-container\">\n <VPPasswordField v-model=\"password\" label=\"Password\" />\n <VPPasswordField v-model=\"password\" label=\"Password with Generator Button\" show-generator />\n</v-container>\n\n<script setup>\n import { ref } from \"vue\";\n const password = ref(\"\");\n</script>"
-}
-```
+<MethodsTable encoded="W10=" />

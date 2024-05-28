@@ -10,9 +10,18 @@ import "@jakguru/vueprint/vueprint.css";
 import "./styles.scss";
 import type { App } from "vue";
 
+import PropsTable from "../components/PropsTable.vue";
+import EventsTable from "../components/EventsTable.vue";
+import SlotsTable from "../components/SlotsTable.vue";
+import MethodsTable from "../components/MethodsTable.vue";
+
 export default {
   ...DefaultTheme,
   async enhanceApp({ app }: { app: App }) {
+    app.component("PropsTable", PropsTable);
+    app.component("EventsTable", EventsTable);
+    app.component("SlotsTable", SlotsTable);
+    app.component("MethodsTable", MethodsTable);
     app.use(Components);
     // @ts-expect-error no idea why this is not working
     app.use(VueMainBootstrap, {

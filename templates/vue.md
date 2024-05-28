@@ -10,10 +10,16 @@
 
 ### Properties
 
+<PropsTable encoded="{{ props }}" />
+
 ### Events
+
+<EventsTable encoded="{{ events }}" />
 
 ### Slots
 
+<SlotsTable encoded="{{ slots }}" />
+
 ### Methods
 
-{{debug}}
+<MethodsTable encoded="{{ methods }}" />

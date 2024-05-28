@@ -4,6 +4,10 @@ By importing `@jakguru/vueprint-components/styles/glass`, you will have access t
 
 The colors available for the frosted glass include all of the [Vuetify Material color pallette](https://vuetifyjs.com/en/styles/colors/), as well as the current [VuePrint Theme's Colors](https://jakguru.github.io/vueprint/api/interfaces/jakguru_vueprint_services_vuetify.VuetifiableColors.html). All colors also have 11 levels of intensity.
 
+::: danger Important Warning
+The frosted glass effect can have a significant impact on a client's brower's performance and should be used sparingly.
+:::
+
 ## Classes
 
 <script lang="ts" setup>
