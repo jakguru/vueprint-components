@@ -3,6 +3,7 @@
  */
 import type { App } from "vue";
 import * as components from "./components";
+import './index.scss'
 
 function install(app: App) {
   for (const key in components) {

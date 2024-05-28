@@ -8,7 +8,7 @@ const nodemon = require("nodemon");
 
 const nodemonConfig = {
   watch: ["src/**/*", "bin/onSrcChange.ts", "package.json"],
-  ext: "ts,json,env,scss,vue",
+  ext: "ts,json,env,scss,vue,md,yml",
   ignore: ["node_modules"],
   exec: "npx jiti bin/onSrcChange.ts",
 };

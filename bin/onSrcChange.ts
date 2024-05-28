@@ -64,6 +64,10 @@ const resolveDocumentableFileInformation = async (
     const docSource = `${source}.md`;
     documentable = existsSync(docSource);
   }
+  if (documentable && "ts" === extension) {
+    const scssSource = source.replace(/\.ts$/, ".scss");
+    documentable = !existsSync(scssSource);
+  }
   if (documentable && `index.${extension}` === filename) {
     documentable = false;
   }
