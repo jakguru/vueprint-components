@@ -82,8 +82,16 @@
             <VPPasswordField v-bind="form.password" />
           </v-col>
         </v-row>
-        <!-- @slot The area between the field rows and the action buttons -->
-        <slot name="before-actions" />
+        <!-- @slot The area between the field rows and the submission button -->
+        <slot name="before-submission" />
+        <v-row>
+          <v-col cols="12">
+            <!-- @vue-expect-error v-btn typedefs don't match what it actually accepts -->
+            <v-btn v-bind="submitButtonBindings" />
+          </v-col>
+        </v-row>
+        <!-- @slot The area after the submission button -->
+        <slot name="after-submission" />
       </v-container>
     </slot>
   </v-card>
@@ -111,6 +119,7 @@ import type {
  *      :usernameValidator="() => true"
  *      :passwordValidator="() => true"
  *  />
+ *  <v-divider />
  *  <VPFormLogin
  *      title="Example of an Invalid Login Form"
  *      :onSubmit="() => alert('Form Submitted')"
@@ -118,6 +127,17 @@ import type {
  *      :passwordValidator="() => 'Please enter a valid password'"
  *  />
  * </template>
+ *
+ * <script setup>
+ *  import { defineComponent, inject } from 'vue'
+ *  const toast = inject('toast')
+ *  const alert = (message) => {
+ *      toast.fire({
+ *          icon: 'info',
+ *          title: message,
+ *      })
+ *  }
+ * <\/script>
  */
 export default defineComponent({
   name: "VPFormLogin",
@@ -134,6 +154,8 @@ export default defineComponent({
           action: string,
           method: string,
           data: Record<string, any>,
+          signal: AbortSignal,
+          abort: () => void,
         ) => Promise<void> | void
       >,
       required: true,
@@ -487,6 +509,131 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    /**
+     * Icon to place after the content of the submission button
+     */
+    submitAppendIcon: {
+      type: String as PropType<string | undefined>,
+      default: undefined,
+    },
+    /**
+     * Color of the submission button when not focused. Can be the name of a theme color, a Vuetify Material Design color, or a CSS color value.
+     */
+    submitBaseColor: {
+      type: String as PropType<string | undefined>,
+      default: undefined,
+    },
+    /**
+     * Designates the border-radius applied to the submission button. This can be xs, sm, md, lg, xl or a numeric value.
+     */
+    submitBorder: {
+      type: [String, Number, Boolean],
+      default: false,
+    },
+    /**
+     * The background color of the submission button. Can be the name of a theme color, a Vuetify Material Design color, or a CSS color value.
+     */
+    submitColor: {
+      type: String,
+      default: "primary",
+    },
+    /**
+     * The density of the submission button.
+     *
+     * @values default, comfortable, compact
+     */
+    submitDensity: {
+      type: String as PropType<"default" | "comfortable" | "compact">,
+      default: "default",
+    },
+    /**
+     * Designates an elevation applied to the submission button between 0 and 24. You can find more information in the [Vuetify elevation documentation](https://vuetifyjs.com/en/styles/elevation/).
+     */
+    submitElevation: {
+      type: [String, Number] as PropType<string | number | undefined>,
+      default: undefined,
+    },
+    /**
+     * Removes the submission button's elevation.
+     */
+    submitFlat: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Sets the height for the submission button.
+     */
+    submitHeight: {
+      type: [String, Number] as PropType<string | number | undefined>,
+      default: undefined,
+    },
+    /**
+     * Icon to place before the content of the submission button
+     */
+    submitPrependIcon: {
+      type: String as PropType<string | undefined>,
+      default: undefined,
+    },
+    /**
+     * Applies the [v-ripple](https://vuetifyjs.com/en/directives/ripple/) directive to the submission button.
+     */
+    submitRipple: {
+      type: [Boolean, Object] as PropType<boolean | object | undefined>,
+      default: false,
+    },
+    /**
+     * Designates the border-radius applied to the submission button. This can be 0, xs, sm, true, lg, xl, pill, circle, and shaped. Find more information on available border radius classes in the [Vuetify Border Radius documentation](https://vuetifyjs.com/en/styles/border-radius/).
+     */
+    submitRounded: {
+      type: [Boolean, Number, String] as PropType<
+        boolean | number | string | undefined
+      >,
+      default: undefined,
+    },
+    /**
+     * Set the "size" of the submission button. Can be a number, string or one of the following predefined sizes: `x-small`, `small`, `default`, `medium`, `large`, `x-large`.
+     */
+    submitSize: {
+      type: [String, Number] as PropType<string | number | undefined>,
+      default: "x-large",
+    },
+    /**
+     * Change the submission button to the "slim" variant
+     */
+    submitSlim: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Specify the text content of the submission button
+     */
+    submitText: {
+      type: String,
+      default: "Log In",
+    },
+    /**
+     * Specify a Vuetify theme for the submission button.
+     */
+    submitTheme: {
+      type: String as PropType<string | undefined>,
+      default: undefined,
+    },
+    /**
+     * Removes any applied border-radius from the submission button.
+     */
+    submitTile: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * Applies a distinct style to the submission button.
+     */
+    submitVariant: {
+      type: String as PropType<
+        "text" | "flat" | "elevated" | "tonal" | "outlined" | "plain"
+      >,
+      default: "elevated",
+    },
   },
   emits: [
     /**
@@ -576,10 +723,27 @@ export default defineComponent({
     });
     const onSubmit = computed(() => props.onSubmit);
     const isSubmitting = ref(false);
+    let submissionAbortController: AbortController = new AbortController();
     const submit = handleFormSubmit(async (values) => {
+      if (isSubmitting.value) return;
+      if (submissionAbortController) {
+        submissionAbortController.abort();
+      }
+      submissionAbortController = new AbortController();
+      submissionAbortController.signal.addEventListener("abort", () => {
+        isSubmitting.value = false;
+      });
       isSubmitting.value = true;
       try {
-        const result = await onSubmit.value(action.value, method.value, values);
+        const result = await onSubmit.value(
+          action.value,
+          method.value,
+          values,
+          submissionAbortController.signal,
+          () => {
+            submissionAbortController.abort();
+          },
+        );
         emit("submit", result);
       } catch (error) {
         emit("submit:error", error);
@@ -690,6 +854,46 @@ export default defineComponent({
     const formIsProcessing = computed(
       () => formIsSubmitting.value || isSubmitting.value,
     );
+    const submitAppendIcon = computed(() => props.submitAppendIcon);
+    const submitBaseColor = computed(() => props.submitBaseColor);
+    const submitBorder = computed(() => props.submitBorder);
+    const submitColor = computed(() => props.submitColor);
+    const submitDensity = computed(() => props.submitDensity);
+    const submitElevation = computed(() => props.submitElevation);
+    const submitFlat = computed(() => props.submitFlat);
+    const submitHeight = computed(() => props.submitHeight);
+    const submitPrependIcon = computed(() => props.submitPrependIcon);
+    const submitRipple = computed(() => props.submitRipple);
+    const submitRounded = computed(() => props.submitRounded);
+    const submitSize = computed(() => props.submitSize);
+    const submitSlim = computed(() => props.submitSlim);
+    const submitText = computed(() => props.submitText);
+    const submitTheme = computed(() => props.submitTheme);
+    const submitTile = computed(() => props.submitTile);
+    const submitVariant = computed(() => props.submitVariant);
+    const submitButtonBindings = computed(() => ({
+      appendIcon: submitAppendIcon.value,
+      baseColor: submitBaseColor.value,
+      border: submitBorder.value,
+      color: submitColor.value,
+      density: submitDensity.value,
+      elevation: submitElevation.value,
+      flat: submitFlat.value,
+      height: submitHeight.value,
+      prependIcon: submitPrependIcon.value,
+      ripple: submitRipple.value,
+      rounded: submitRounded.value,
+      size: submitSize.value,
+      slim: submitSlim.value,
+      text: submitText.value,
+      theme: submitTheme.value,
+      tile: submitTile.value,
+      variant: submitVariant.value,
+      disabled: formIsValidating.value,
+      loading: formIsProcessing.value,
+      block: true,
+      type: "submit",
+    }));
     return {
       formWrapperCardBindings,
       headerSlotBindings,
@@ -702,6 +906,7 @@ export default defineComponent({
       setFormFieldTouched,
       setFormTouched,
       submit,
+      submitButtonBindings,
     };
   },
 });

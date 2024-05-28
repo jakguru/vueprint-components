@@ -7,6 +7,7 @@ import VueClientBootstrap from "@jakguru/vueprint/plugins/client";
 import * as vuetifyComponents from "vuetify/components";
 import * as vuetifyDirectives from "vuetify/directives";
 import "@jakguru/vueprint/vueprint.css";
+import "sweetalert2/src/sweetalert2.scss";
 import "./styles.scss";
 import type { App } from "vue";
 
