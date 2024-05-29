@@ -4,7 +4,7 @@
 
 ## Example Usage
 
-{{ example }}
+<REPL class="mt-5" height="700" content="{{ exampleEncoded }}" fileName="{{displayName}}"/>
 
 ## Reference
 

@@ -1,6 +1,5 @@
 // .vitepress/theme/index.js
 import DefaultTheme from "vitepress/theme";
-// @ts-expect-error this referes to itself, so of course there's no type defintions yet
 import Components from "@jakguru/vueprint-components";
 import VueMainBootstrap from "@jakguru/vueprint/plugins/main";
 import VueClientBootstrap from "@jakguru/vueprint/plugins/client";
@@ -15,6 +14,7 @@ import PropsTable from "../components/PropsTable.vue";
 import EventsTable from "../components/EventsTable.vue";
 import SlotsTable from "../components/SlotsTable.vue";
 import MethodsTable from "../components/MethodsTable.vue";
+import REPL from "../components/REPL.vue";
 
 export default {
   ...DefaultTheme,
@@ -23,6 +23,7 @@ export default {
     app.component("EventsTable", EventsTable);
     app.component("SlotsTable", SlotsTable);
     app.component("MethodsTable", MethodsTable);
+    app.component("REPL", REPL);
     app.use(Components);
     // @ts-expect-error no idea why this is not working
     app.use(VueMainBootstrap, {

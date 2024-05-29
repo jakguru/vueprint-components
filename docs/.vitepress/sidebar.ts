@@ -1,46 +1,42 @@
 export default [
   {
-    "text": "formUtils.ts",
-    "link": "/common/formUtils"
-  },
-  {
-    "text": "Components",
-    "items": [
+    text: "Components",
+    items: [
       {
-        "text": "Fields",
-        "items": [
+        text: "Fields",
+        items: [
           {
-            "text": "VPPasswordField",
-            "link": "/components/fields/VPPasswordField"
+            text: "VPPasswordField",
+            link: "/components/fields/VPPasswordField",
           },
           {
-            "text": "VPTextFieldCopyable",
-            "link": "/components/fields/VPTextFieldCopyable"
-          }
+            text: "VPTextFieldCopyable",
+            link: "/components/fields/VPTextFieldCopyable",
+          },
         ],
-        "collapsed": true
+        collapsed: true,
       },
       {
-        "text": "Forms",
-        "items": [
+        text: "Forms",
+        items: [
           {
-            "text": "VPFormLogin",
-            "link": "/components/forms/VPFormLogin"
-          }
+            text: "VPFormLogin",
+            link: "/components/forms/VPFormLogin",
+          },
         ],
-        "collapsed": true
-      }
+        collapsed: true,
+      },
     ],
-    "collapsed": true
+    collapsed: true,
   },
   {
-    "text": "Styles",
-    "items": [
+    text: "Styles",
+    items: [
       {
-        "text": "Frosted Glass Utility Classes",
-        "link": "/styles/glass"
-      }
+        text: "Frosted Glass Utility Classes",
+        link: "/styles/glass",
+      },
     ],
-    "collapsed": true
-  }
+    collapsed: true,
+  },
 ];

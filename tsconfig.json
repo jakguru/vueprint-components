@@ -24,6 +24,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
+      "@jakguru/vueprint-components": [
+        "./src"
+      ],
       "@jakguru/vueprint-components/*": [
         "./src"
       ],
@@ -38,6 +41,7 @@
     "docs/.vitepress/**/*.vue",
     "bin/**/*",
     "repl/**/*",
-    "vite.config.ts"
+    "vite.config.ts",
+    "repl.vite.config.ts"
   ]
 }

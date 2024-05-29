@@ -57,6 +57,9 @@ const resolveDocumentableFileInformation = async (
   const filename = source.split(sep).pop() as string;
   const extension = filename.split(".").pop() as string;
   let documentable = DOCUMENTABLE_TYPES.includes(extension);
+  if (documentable && filename.startsWith("_")) {
+    documentable = false;
+  }
   if (documentable && "ts" === extension && filename.includes(".d.ts")) {
     documentable = false;
   }
@@ -208,6 +211,7 @@ const getDocForVue = async (source: string) => {
   merge.events = btoa(JSON.stringify(componentInfo.events || []));
   merge.slots = btoa(JSON.stringify(componentInfo.slots || []));
   merge.methods = btoa(JSON.stringify(componentInfo.methods || []));
+  merge.exampleEncoded = btoa(merge.example);
   merge.example = merge.example
     .replace(/<template>/g, '<v-container fluid class="demo-container">')
     .replace(/<\/template>/g, "</v-container>");
@@ -240,6 +244,7 @@ const updateSidebar = async () => {
     }
   }
   if (needsUpdate) {
+    console.log(color.yellow("Updating Sidebar..."));
     await writeFile(
       sidebarPath,
       `export default ${JSON.stringify(sidebar, null, 2)};`,
@@ -250,7 +255,7 @@ const updateSidebar = async () => {
 
 const run = async () => {
   updateSidebar();
-
+  console.log(color.yellow("Updating Documentation..."));
   const documentableFiles = await listDocumentableFiles(SRC_DIR);
   for (let i = 0; i < documentableFiles.length; i++) {
     const file = documentableFiles[i];
@@ -271,6 +276,7 @@ const run = async () => {
     await mkdirp(docDir);
     await writeFile(docPath, doc);
   }
+  console.log(color.green("Documentation Updated"));
 };
 
 run().catch((error) => {

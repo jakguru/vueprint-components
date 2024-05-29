@@ -54,8 +54,30 @@ import generator from "generate-password-ts";
  * @module @jakguru/vueprint-components/components/fields/VPPasswordField
  * @example
  * <template>
- *  <VPPasswordField v-model="password" label="Password" />
- *  <VPPasswordField v-model="password" label="Password with Generator Button" show-generator />
+ *   <v-app>
+ *     <v-main>
+ *         <v-container class="fill-height" fluid>
+ *             <v-row justify="center">
+ *                 <v-col cols="12">
+ *                     <v-card>
+ *                         <v-container>
+ *                             <v-row>
+ *                                 <v-col cols="12">
+ *                                     <VPPasswordField v-model="password" label="Password" />
+ *                                 </v-col>
+ *                             </v-row>
+ *                             <v-row>
+ *                                 <v-col cols="12">
+ *                                     <VPPasswordField v-model="password" label="Password with Generator Button" show-generator />
+ *                                 </v-col>
+ *                             </v-row>
+ *                         </v-container>
+ *                     </v-card>
+ *                 </v-col>
+ *             </v-row>
+ *         </v-container>
+ *     </v-main>
+ *   </v-app>
  * </template>
  *
  * <script setup>

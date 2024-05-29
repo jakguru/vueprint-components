@@ -4,32 +4,7 @@ The `vp-form-login` component renders a login form for use in a VuePrint applica
 
 ## Example Usage
 
-<v-container fluid class="demo-container">
- <VPFormLogin
-     title="Example Login Form"
-     :onSubmit="() => alert('Form Submitted')"
-     :usernameValidator="() => true"
-     :passwordValidator="() => true"
- />
- <v-divider />
- <VPFormLogin
-     title="Example of an Invalid Login Form"
-     :onSubmit="() => alert('Form Submitted')"
-     :usernameValidator="() => 'Please enter a valid username'"
-     :passwordValidator="() => 'Please enter a valid password'"
- />
-</v-container>
-
-<script setup>
- import { defineComponent, inject } from 'vue'
- const toast = inject('toast')
- const alert = (message) => {
-     toast.fire({
-         icon: 'info',
-         title: message,
-     })
- }
-</script>
+<REPL class="mt-5" height="700" content="PHRlbXBsYXRlPgogPHYtYXBwPgogICA8di1tYWluPgogICAgICAgPHYtY29udGFpbmVyIGNsYXNzPSJmaWxsLWhlaWdodCIgZmx1aWQ+CiAgICAgICAgICAgPHYtcm93IGp1c3RpZnk9ImNlbnRlciI+CiAgICAgICAgICAgICAgIDx2LWNvbCBjb2xzPSIxMiI+CiAgICAgICAgICAgICAgICAgPHYtcm93PgogICAgICAgICAgICAgICAgICAgICA8di1jb2wgY29scz0iMTIiPgogICAgICAgICAgICAgICAgICAgICAgICAgPFZQRm9ybUxvZ2luCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdGl0bGU9IkV4YW1wbGUgTG9naW4gRm9ybSIKICAgICAgICAgICAgICAgICAgICAgICAgICAgICA6b25TdWJtaXQ9IigpID0+IGFsZXJ0KCdGb3JtIFN1Ym1pdHRlZCcpIgogICAgICAgICAgICAgICAgICAgICAgICAgICAgIDp1c2VybmFtZVZhbGlkYXRvcj0iKCkgPT4gdHJ1ZSIKICAgICAgICAgICAgICAgICAgICAgICAgICAgICA6cGFzc3dvcmRWYWxpZGF0b3I9IigpID0+IHRydWUiCiAgICAgICAgICAgICAgICAgICAgICAgICAvPgogICAgICAgICAgICAgICAgICAgICA8L3YtY29sPgogICAgICAgICAgICAgICAgIDwvdi1yb3c+CiAgICAgICAgICAgICAgICAgPHYtcm93PgogICAgICAgICAgICAgICAgICAgICA8di1jb2wgY29scz0iMTIiPgogICAgICAgICAgICAgICAgICAgICAgICAgPFZQRm9ybUxvZ2luCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdGl0bGU9IkV4YW1wbGUgb2YgYW4gSW52YWxpZCBMb2dpbiBGb3JtIgogICAgICAgICAgICAgICAgICAgICAgICAgICAgIDpvblN1Ym1pdD0iKCkgPT4gYWxlcnQoJ0Zvcm0gU3VibWl0dGVkJykiCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgOnVzZXJuYW1lVmFsaWRhdG9yPSIoKSA9PiAnUGxlYXNlIGVudGVyIGEgdmFsaWQgdXNlcm5hbWUnIgogICAgICAgICAgICAgICAgICAgICAgICAgICAgIDpwYXNzd29yZFZhbGlkYXRvcj0iKCkgPT4gJ1BsZWFzZSBlbnRlciBhIHZhbGlkIHBhc3N3b3JkJyIKICAgICAgICAgICAgICAgICAgICAgICAgIC8+CiAgICAgICAgICAgICAgICAgICAgIDwvdi1jb2w+CiAgICAgICAgICAgICAgICAgPC92LXJvdz4KICAgICAgICAgICAgICAgPC92LWNvbD4KICAgICAgICAgICA8L3Ytcm93PgogICAgICAgPC92LWNvbnRhaW5lcj4KICAgPC92LW1haW4+CiA8L3YtYXBwPgo8L3RlbXBsYXRlPgoKPHNjcmlwdCBzZXR1cD4KIGltcG9ydCB7IGRlZmluZUNvbXBvbmVudCwgaW5qZWN0IH0gZnJvbSAndnVlJwogY29uc3QgdG9hc3QgPSBpbmplY3QoJ3RvYXN0JykKIGNvbnN0IGFsZXJ0ID0gKG1lc3NhZ2UpID0+IHsKICAgICB0b2FzdC5maXJlKHsKICAgICAgICAgaWNvbjogJ2luZm8nLAogICAgICAgICB0aXRsZTogbWVzc2FnZSwKICAgICB9KQogfQo8L3NjcmlwdD4=" fileName="VPFormLogin"/>
 
 ## Reference
 

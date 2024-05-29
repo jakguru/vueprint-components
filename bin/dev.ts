@@ -24,13 +24,20 @@ nodemon
   })
   .on("restart", function (files: string[]) {
     console.log("App restarted due to: ", files);
+    const isSrcChange = files.some((file) => file.includes("/src/"));
+    if (isSrcChange) {
+      console.log(color.yellow("Updating REPL files..."));
+      execa("npx", ["jiti", "bin/doUpdateRepl.ts"]);
+    } else {
+      console.log(color.yellow("No REPL files to update"));
+    }
   });
 const vitepressDevServer = execa("npx", ["vitepress", "dev", "docs"], {
   stdio: "inherit",
 });
 vitepressDevServer
   .catch((err) => {
-    console.error(err.message);
+    console.error(color.red(err.message));
     process.exit(1);
   })
   .finally(() => {

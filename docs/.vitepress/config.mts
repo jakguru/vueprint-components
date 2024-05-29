@@ -125,7 +125,10 @@ export default defineConfig({
     sidebar: [
       {
         text: "Introduction",
-        items: [{ text: "Getting Started", link: "/guide/" }],
+        items: [
+          { text: "Getting Started", link: "/guide/" },
+          { text: "Playground", link: "/playground/" },
+        ],
       },
       ...sidebar,
       {

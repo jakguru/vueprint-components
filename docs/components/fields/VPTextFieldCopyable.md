@@ -10,9 +10,7 @@ This component is a wrapper around the `v-text-field` component. It is recommend
 
 ## Example Usage
 
-<v-container fluid class="demo-container">
- <VPTextFieldCopyable value="Example Value" label="Example Copyable Text Field" @copied="$toast.fire({ icon: 'success', title: 'Copied' })" @copy-failed="$toast.fire({ icon: 'error', title: 'Failed to Copy' })" />
-</v-container>
+<REPL class="mt-5" height="700" content="PHRlbXBsYXRlPgogPHYtYXBwPgogICA8di1tYWluPgogICAgICAgPHYtY29udGFpbmVyIGNsYXNzPSJmaWxsLWhlaWdodCIgZmx1aWQ+CiAgICAgICAgICAgPHYtcm93IGp1c3RpZnk9ImNlbnRlciI+CiAgICAgICAgICAgICAgIDx2LWNvbCBjb2xzPSIxMiI+CiAgICAgICAgICAgICAgICAgICA8di1jYXJkPgogICAgICAgICAgICAgICAgICAgICAgIDx2LWNvbnRhaW5lcj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgPHYtcm93PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHYtY29sIGNvbHM9IjEyIj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8VlBUZXh0RmllbGRDb3B5YWJsZSB2YWx1ZT0iRXhhbXBsZSBWYWx1ZSIgbGFiZWw9IkV4YW1wbGUgQ29weWFibGUgVGV4dCBGaWVsZCIgQGNvcGllZD0iJHRvYXN0LmZpcmUoeyBpY29uOiAnc3VjY2VzcycsIHRpdGxlOiAnQ29waWVkJyB9KSIgQGNvcHktZmFpbGVkPSIkdG9hc3QuZmlyZSh7IGljb246ICdlcnJvcicsIHRpdGxlOiAnRmFpbGVkIHRvIENvcHknIH0pIiAvPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC92LWNvbD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgPC92LXJvdz4KICAgICAgICAgICAgICAgICAgICAgICA8L3YtY29udGFpbmVyPgogICAgICAgICAgICAgICAgICAgPC92LWNhcmQ+CiAgICAgICAgICAgICAgIDwvdi1jb2w+CiAgICAgICAgICAgPC92LXJvdz4KICAgICAgIDwvdi1jb250YWluZXI+CiAgIDwvdi1tYWluPgogPC92LWFwcD4KPC90ZW1wbGF0ZT4=" fileName="VPTextFieldCopyable"/>
 
 ## Reference
 

@@ -58,7 +58,25 @@ const makeProps = (additional: any = {}) => {
  * @module @jakguru/vueprint-components/components/fields/VPPasswordField
  * @example
  * <template>
- *  <VPTextFieldCopyable value="Example Value" label="Example Copyable Text Field" @copied="$toast.fire({ icon: 'success', title: 'Copied' })" @copy-failed="$toast.fire({ icon: 'error', title: 'Failed to Copy' })" />
+ *  <v-app>
+ *    <v-main>
+ *        <v-container class="fill-height" fluid>
+ *            <v-row justify="center">
+ *                <v-col cols="12">
+ *                    <v-card>
+ *                        <v-container>
+ *                            <v-row>
+ *                                <v-col cols="12">
+ *                                    <VPTextFieldCopyable value="Example Value" label="Example Copyable Text Field" @copied="$toast.fire({ icon: 'success', title: 'Copied' })" @copy-failed="$toast.fire({ icon: 'error', title: 'Failed to Copy' })" />
+ *                                </v-col>
+ *                            </v-row>
+ *                        </v-container>
+ *                    </v-card>
+ *                </v-col>
+ *            </v-row>
+ *        </v-container>
+ *    </v-main>
+ *  </v-app>
  * </template>
  */
 export default defineComponent({

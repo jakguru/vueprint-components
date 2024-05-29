@@ -100,32 +100,49 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { useForm } from "vee-validate";
-import { vuetifyConfig } from "../../common/formUtils";
+import { vuetifyConfig } from "../../common/_formUtils";
 import VPPasswordField from "../fields/VPPasswordField.vue";
 import type { PropType } from "vue";
 import type {
   FieldValidationMetaInfo,
   FormFieldValidator,
-} from "../../common/formUtils";
+} from "../../common/_formUtils";
 /**
  * The `vp-form-login` component renders a login form for use in a VuePrint application.
  *
  * @module @jakguru/vueprint-components/components/forms/VPFormLogin
  * @example
  * <template>
- *  <VPFormLogin
- *      title="Example Login Form"
- *      :onSubmit="() => alert('Form Submitted')"
- *      :usernameValidator="() => true"
- *      :passwordValidator="() => true"
- *  />
- *  <v-divider />
- *  <VPFormLogin
- *      title="Example of an Invalid Login Form"
- *      :onSubmit="() => alert('Form Submitted')"
- *      :usernameValidator="() => 'Please enter a valid username'"
- *      :passwordValidator="() => 'Please enter a valid password'"
- *  />
+ *  <v-app>
+ *    <v-main>
+ *        <v-container class="fill-height" fluid>
+ *            <v-row justify="center">
+ *                <v-col cols="12">
+ *                  <v-row>
+ *                      <v-col cols="12">
+ *                          <VPFormLogin
+ *                              title="Example Login Form"
+ *                              :onSubmit="() => alert('Form Submitted')"
+ *                              :usernameValidator="() => true"
+ *                              :passwordValidator="() => true"
+ *                          />
+ *                      </v-col>
+ *                  </v-row>
+ *                  <v-row>
+ *                      <v-col cols="12">
+ *                          <VPFormLogin
+ *                              title="Example of an Invalid Login Form"
+ *                              :onSubmit="() => alert('Form Submitted')"
+ *                              :usernameValidator="() => 'Please enter a valid username'"
+ *                              :passwordValidator="() => 'Please enter a valid password'"
+ *                          />
+ *                      </v-col>
+ *                  </v-row>
+ *                </v-col>
+ *            </v-row>
+ *        </v-container>
+ *    </v-main>
+ *  </v-app>
  * </template>
  *
  * <script setup>
@@ -724,7 +741,7 @@ export default defineComponent({
     const onSubmit = computed(() => props.onSubmit);
     const isSubmitting = ref(false);
     let submissionAbortController: AbortController = new AbortController();
-    const submit = handleFormSubmit(async (values) => {
+    const submitForm = handleFormSubmit(async (values) => {
       if (isSubmitting.value) return;
       if (submissionAbortController) {
         submissionAbortController.abort();
@@ -750,6 +767,10 @@ export default defineComponent({
       }
       isSubmitting.value = false;
     });
+    const submit = (event: Event) => {
+      event.preventDefault();
+      submitForm();
+    };
     const density = computed(() => props.density);
     const fieldVariant = computed(() => props.fieldVariant);
     const fieldBaseColor = computed(() => props.fieldBaseColor);
@@ -911,3 +932,4 @@ export default defineComponent({
   },
 });
 </script>
+../../common/_formUtils../../common/_formUtils
