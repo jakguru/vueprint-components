@@ -110,7 +110,7 @@ import type {
 } from "../../common/_formUtils";
 /**
  * The `vp-form-login` component renders a login form for use in a VuePrint application.
- * 
+ *
  * ::: info Tip
  * This component is compatible with the [Vuetify Global Configuration](https://vuetifyjs.com/en/features/global-configuration/) API.
  * :::
@@ -685,40 +685,40 @@ export default defineComponent({
     "submit:error",
     /**
      * Emitted when the value of the `username` field is updated
-     * 
+     *
      * @event update:username
      * @property {string|undefined} value The new value of the `username` field
      */
     "update:username",
     /**
      * Emitted when the value of the `password` field is updated
-     * 
+     *
      * @event update:password
      * @property {string|undefined} value The new value of the `password` field
      */
     "update:password",
   ],
   setup(props, { emit }) {
-    const _props = useDefaults(props, "VPFormLogin");
-    const action = computed(() => _props.action);
-    const method = computed(() => _props.method);
-    const border = computed(() => _props.border);
-    const bgColor = computed(() => _props.bgColor);
-    const elevation = computed(() => _props.elevation);
-    const flat = computed(() => _props.flat);
-    const height = computed(() => _props.height);
-    const backgroundImage = computed(() => _props.backgroundImage);
-    const maxHeight = computed(() => _props.maxHeight);
-    const maxWidth = computed(() => _props.maxWidth);
-    const minHeight = computed(() => _props.minHeight);
-    const minWidth = computed(() => _props.minWidth);
-    const position = computed(() => _props.position);
-    const ripple = computed(() => _props.ripple);
-    const rounded = computed(() => _props.rounded);
-    const theme = computed(() => _props.theme);
-    const tile = computed(() => _props.tile);
-    const variant = computed(() => _props.variant);
-    const width = computed(() => _props.width);
+    const propsWithDefaults = useDefaults(props, "VPFormLogin");
+    const action = computed(() => propsWithDefaults.action);
+    const method = computed(() => propsWithDefaults.method);
+    const border = computed(() => propsWithDefaults.border);
+    const bgColor = computed(() => propsWithDefaults.bgColor);
+    const elevation = computed(() => propsWithDefaults.elevation);
+    const flat = computed(() => propsWithDefaults.flat);
+    const height = computed(() => propsWithDefaults.height);
+    const backgroundImage = computed(() => propsWithDefaults.backgroundImage);
+    const maxHeight = computed(() => propsWithDefaults.maxHeight);
+    const maxWidth = computed(() => propsWithDefaults.maxWidth);
+    const minHeight = computed(() => propsWithDefaults.minHeight);
+    const minWidth = computed(() => propsWithDefaults.minWidth);
+    const position = computed(() => propsWithDefaults.position);
+    const ripple = computed(() => propsWithDefaults.ripple);
+    const rounded = computed(() => propsWithDefaults.rounded);
+    const theme = computed(() => propsWithDefaults.theme);
+    const tile = computed(() => propsWithDefaults.tile);
+    const variant = computed(() => propsWithDefaults.variant);
+    const width = computed(() => propsWithDefaults.width);
     const formWrapperCardBindings = computed(() => ({
       tag: "form",
       action: action.value,
@@ -741,12 +741,16 @@ export default defineComponent({
       variant: variant.value,
       width: width.value,
     }));
-    const title = computed(() => _props.title);
+    const title = computed(() => propsWithDefaults.title);
     const headerSlotBindings = computed(() => ({
       title: title.value,
     }));
-    const usernameValidator = computed(() => _props.usernameValidator);
-    const passwordValidator = computed(() => _props.passwordValidator);
+    const usernameValidator = computed(
+      () => propsWithDefaults.usernameValidator,
+    );
+    const passwordValidator = computed(
+      () => propsWithDefaults.passwordValidator,
+    );
     const {
       handleSubmit: handleFormSubmit,
       isSubmitting: formIsSubmitting,
@@ -761,8 +765,8 @@ export default defineComponent({
       values: formValues,
     } = useForm({
       initialValues: {
-        username: _props.username,
-        password: _props.password,
+        username: propsWithDefaults.username,
+        password: propsWithDefaults.password,
       },
       validationSchema: {
         username: (val: string, ctx: FieldValidationMetaInfo) =>
@@ -771,20 +775,32 @@ export default defineComponent({
           passwordValidator.value(val, ctx),
       },
     });
-    const username = computed(() => _props.username);
-    const password = computed(() => _props.password);
-    watch(() => username.value, (val: string | undefined) => {
-      setFormFieldValue("username", val, true);
-    });
-    watch(() => password.value, (val: string | undefined) => {
-      setFormFieldValue("password", val, true);
-    });
-    watch(() => formValues.username, (val: string | undefined) => {
-      emit("update:username", val);
-    });
-    watch(() => formValues.password, (val: string | undefined) => {
-      emit("update:password", val);
-    });
+    const username = computed(() => propsWithDefaults.username);
+    const password = computed(() => propsWithDefaults.password);
+    watch(
+      () => username.value,
+      (val: string | undefined) => {
+        setFormFieldValue("username", val, true);
+      },
+    );
+    watch(
+      () => password.value,
+      (val: string | undefined) => {
+        setFormFieldValue("password", val, true);
+      },
+    );
+    watch(
+      () => formValues.username,
+      (val: string | undefined) => {
+        emit("update:username", val);
+      },
+    );
+    watch(
+      () => formValues.password,
+      (val: string | undefined) => {
+        emit("update:password", val);
+      },
+    );
     const isSubmitting = ref(false);
     let submissionAbortController: AbortController = new AbortController();
     const submitForm = handleFormSubmit(async (values) => {
@@ -798,10 +814,10 @@ export default defineComponent({
       });
       isSubmitting.value = true;
       try {
-        const result = await _props.onSubmit(
+        const result = await propsWithDefaults.onSubmit(
           action.value,
           method.value,
-          {...values},
+          { ...values },
           submissionAbortController.signal,
           () => {
             submissionAbortController.abort();
@@ -817,30 +833,46 @@ export default defineComponent({
       event.preventDefault();
       submitForm();
     };
-    const density = computed(() => _props.density);
-    const fieldVariant = computed(() => _props.fieldVariant);
-    const fieldBaseColor = computed(() => _props.fieldBaseColor);
-    const fieldBackgroundColor = computed(() => _props.fieldBackgroundColor);
-    const fieldFlat = computed(() => _props.fieldFlat);
-    const fieldRounded = computed(() => _props.fieldRounded);
-    const fieldSingleLine = computed(() => _props.fieldSingleLine);
-    const fieldTheme = computed(() => _props.fieldTheme);
-    const fieldTile = computed(() => _props.fieldTile);
-    const clearable = computed(() => _props.clearable);
-    const usernameLabel = computed(() => _props.usernameLabel);
-    const usernameType = computed(() => _props.usernameType);
-    const usernameAutocomplete = computed(() => _props.usernameAutocomplete);
-    const usernameAutofocus = computed(() => _props.usernameAutofocus);
-    const usernameIcon = computed(() => _props.usernameIcon);
-    const usernameIconPosition = computed(() => _props.usernameIconPosition);
-    const usernameHint = computed(() => _props.usernameHint);
-    const usernameHintPersistent = computed(() => _props.usernameHintPersistent);
-    const passwordLabel = computed(() => _props.passwordLabel);
-    const passwordAutocomplete = computed(() => _props.passwordAutocomplete);
-    const passwordIcon = computed(() => _props.passwordIcon);
-    const passwordIconPosition = computed(() => _props.passwordIconPosition);
-    const passwordHint = computed(() => _props.passwordHint);
-    const passwordHintPersistent = computed(() => _props.passwordHintPersistent);
+    const density = computed(() => propsWithDefaults.density);
+    const fieldVariant = computed(() => propsWithDefaults.fieldVariant);
+    const fieldBaseColor = computed(() => propsWithDefaults.fieldBaseColor);
+    const fieldBackgroundColor = computed(
+      () => propsWithDefaults.fieldBackgroundColor,
+    );
+    const fieldFlat = computed(() => propsWithDefaults.fieldFlat);
+    const fieldRounded = computed(() => propsWithDefaults.fieldRounded);
+    const fieldSingleLine = computed(() => propsWithDefaults.fieldSingleLine);
+    const fieldTheme = computed(() => propsWithDefaults.fieldTheme);
+    const fieldTile = computed(() => propsWithDefaults.fieldTile);
+    const clearable = computed(() => propsWithDefaults.clearable);
+    const usernameLabel = computed(() => propsWithDefaults.usernameLabel);
+    const usernameType = computed(() => propsWithDefaults.usernameType);
+    const usernameAutocomplete = computed(
+      () => propsWithDefaults.usernameAutocomplete,
+    );
+    const usernameAutofocus = computed(
+      () => propsWithDefaults.usernameAutofocus,
+    );
+    const usernameIcon = computed(() => propsWithDefaults.usernameIcon);
+    const usernameIconPosition = computed(
+      () => propsWithDefaults.usernameIconPosition,
+    );
+    const usernameHint = computed(() => propsWithDefaults.usernameHint);
+    const usernameHintPersistent = computed(
+      () => propsWithDefaults.usernameHintPersistent,
+    );
+    const passwordLabel = computed(() => propsWithDefaults.passwordLabel);
+    const passwordAutocomplete = computed(
+      () => propsWithDefaults.passwordAutocomplete,
+    );
+    const passwordIcon = computed(() => propsWithDefaults.passwordIcon);
+    const passwordIconPosition = computed(
+      () => propsWithDefaults.passwordIconPosition,
+    );
+    const passwordHint = computed(() => propsWithDefaults.passwordHint);
+    const passwordHintPersistent = computed(
+      () => propsWithDefaults.passwordHintPersistent,
+    );
     const fieldsAreDisabled = computed(() => formIsSubmitting.value);
     const fieldsAreaClearable = computed(
       () => !fieldsAreDisabled.value && clearable.value,
@@ -921,23 +953,25 @@ export default defineComponent({
     const formIsProcessing = computed(
       () => formIsSubmitting.value || isSubmitting.value,
     );
-    const submitAppendIcon = computed(() => _props.submitAppendIcon);
-    const submitBaseColor = computed(() => _props.submitBaseColor);
-    const submitBorder = computed(() => _props.submitBorder);
-    const submitColor = computed(() => _props.submitColor);
-    const submitDensity = computed(() => _props.submitDensity);
-    const submitElevation = computed(() => _props.submitElevation);
-    const submitFlat = computed(() => _props.submitFlat);
-    const submitHeight = computed(() => _props.submitHeight);
-    const submitPrependIcon = computed(() => _props.submitPrependIcon);
-    const submitRipple = computed(() => _props.submitRipple);
-    const submitRounded = computed(() => _props.submitRounded);
-    const submitSize = computed(() => _props.submitSize);
-    const submitSlim = computed(() => _props.submitSlim);
-    const submitText = computed(() => _props.submitText);
-    const submitTheme = computed(() => _props.submitTheme);
-    const submitTile = computed(() => _props.submitTile);
-    const submitVariant = computed(() => _props.submitVariant);
+    const submitAppendIcon = computed(() => propsWithDefaults.submitAppendIcon);
+    const submitBaseColor = computed(() => propsWithDefaults.submitBaseColor);
+    const submitBorder = computed(() => propsWithDefaults.submitBorder);
+    const submitColor = computed(() => propsWithDefaults.submitColor);
+    const submitDensity = computed(() => propsWithDefaults.submitDensity);
+    const submitElevation = computed(() => propsWithDefaults.submitElevation);
+    const submitFlat = computed(() => propsWithDefaults.submitFlat);
+    const submitHeight = computed(() => propsWithDefaults.submitHeight);
+    const submitPrependIcon = computed(
+      () => propsWithDefaults.submitPrependIcon,
+    );
+    const submitRipple = computed(() => propsWithDefaults.submitRipple);
+    const submitRounded = computed(() => propsWithDefaults.submitRounded);
+    const submitSize = computed(() => propsWithDefaults.submitSize);
+    const submitSlim = computed(() => propsWithDefaults.submitSlim);
+    const submitText = computed(() => propsWithDefaults.submitText);
+    const submitTheme = computed(() => propsWithDefaults.submitTheme);
+    const submitTile = computed(() => propsWithDefaults.submitTile);
+    const submitVariant = computed(() => propsWithDefaults.submitVariant);
     const submitButtonBindings = computed(() => ({
       appendIcon: submitAppendIcon.value,
       baseColor: submitBaseColor.value,
