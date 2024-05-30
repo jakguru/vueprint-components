@@ -50,6 +50,10 @@ import generator from "generate-password-ts";
  * ::: info Important Note
  * This component is a wrapper around the `v-text-field` component. It is recommended to refer to the [Vuetify documentation](https://vuetifyjs.com/en/api/v-text-field/) for more information on the available props and events.
  * :::
+ * 
+ * ::: info Tip
+ * This component is compatible with the [Vuetify Global Configuration](https://vuetifyjs.com/en/features/global-configuration/) API.
+ * :::
  *
  * @module @jakguru/vueprint-components/components/fields/VPPasswordField
  * @example
