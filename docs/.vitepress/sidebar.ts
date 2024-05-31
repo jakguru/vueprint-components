@@ -17,6 +17,16 @@ export default [
         "collapsed": true
       },
       {
+        "text": "Formatters",
+        "items": [
+          {
+            "text": "VPDateTime",
+            "link": "/components/formatters/VPDateTime"
+          }
+        ],
+        "collapsed": true
+      },
+      {
         "text": "Forms",
         "items": [
           {

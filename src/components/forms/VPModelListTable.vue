@@ -26,6 +26,12 @@
 import { defineComponent, computed, ref } from "vue";
 import { useDefaults } from "vuetify";
 import type { PropType, ComputedRef } from "vue";
+
+interface ModelListTableSearchChoice {
+  text: string;
+  value: string;
+}
+
 interface ModelListTableColumnDefinition {
   property: string;
   title: string;
@@ -39,6 +45,19 @@ interface ModelListTableColumnDefinition {
   onContextMenu?: (item: any) => void;
   displayComponent?: string;
   displayComponentBinder?: (item: any) => ComputedRef<Record<string, any>>;
+  searchable?: boolean;
+  searchType?:
+    | "string"
+    | "number"
+    | "boolean"
+    | "date"
+    | "datetime"
+    | "time"
+    | "select"
+    | "multiselect"
+    | "combobox"
+    | "multicombobox";
+  choicesLoader?: (term: string) => Promise<ModelListTableSearchChoice[]>;
 }
 /**
  * The `vp-model-list-table` component is used to render a searchable table of items with similar attributes. Its key features include:
@@ -58,7 +77,7 @@ interface ModelListTableColumnDefinition {
  *                <v-col cols="12">
  *                  <v-row>
  *                      <v-col cols="12">
- *                          <VPModelListTable background-color="black" />
+ *                          <VPModelListTable :columns="columns" />
  *                      </v-col>
  *                  </v-row>
  *                </v-col>
@@ -67,6 +86,23 @@ interface ModelListTableColumnDefinition {
  *    </v-main>
  *  </v-app>
  * </template>
+ *
+ * <script setup>
+ * import { computed } from 'vue';
+ * const habitatsDisplayComponentBinder = (item) => computed(() => ({
+ *  items: item.habitats.map((h) => ({ text: h, value: h })),
+ * }));
+ * const columns = [
+ *  { property: 'id', title: 'ID' },
+ *  { property: 'name', title: 'Name' },
+ *  { property: 'species', title: 'Species' },
+ *  { property: 'diet', title: 'Diet' },
+ *  { property: 'habitats', title: 'Habitats', searchType: 'multiselect', displayComponent: 'VPChipGroup', displayComponentBinder: habitatsDisplayComponentBinder },
+ *  { property: 'extinct', title: 'Extinct' },
+ *  { property: 'endangered', title: 'Endangered' },
+ *  { property: 'created_at', title: 'Added', alignment: 'end' },
+ * ];
+ * <\/script>
  */
 export default defineComponent({
   name: "VPModelListTable",
@@ -144,6 +180,18 @@ export default defineComponent({
     const onOptionsChanged = async (options: any) => {
       console.log("options", options);
     };
+    const columns = computed(() =>
+      [...propsWithDefaults.columns].map((c) =>
+        Object.assign(
+          {
+            sortable: true,
+            searchable: true,
+            searchType: "string",
+          },
+          c,
+        ),
+      ),
+    );
     const showLoading = computed(() => false);
     const serverDataTableSelections = ref<any[]>([]);
     const tableItemsPerPage = ref(10);
@@ -151,7 +199,19 @@ export default defineComponent({
     const serverDataTableProps = useDefaults({}, "VDataTableServer");
     const serverDataTableBind = computed(() => ({
       ...serverDataTableProps,
-      headers: [],
+      headers: [
+        ...[...columns.value].map((c) => ({
+          key: c.property,
+          value: c.property,
+          title: c.title,
+          align: c.alignment,
+          width: c.width,
+          minWidth: c.minWidth,
+          maxWidth: c.maxWidth,
+          nowrap: true,
+          sortable: c.sortable,
+        })),
+      ],
       items: [],
       itemsLength: totalItemsCount.value,
       loading: showLoading.value,
@@ -183,6 +243,9 @@ export default defineComponent({
 
 <style lang="scss">
 .vp-model-list-table {
+  max-width: 100%;
+  overflow-x: auto;
+
   .v-table {
     background: inherit;
     color: inherit;
