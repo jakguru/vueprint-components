@@ -89,8 +89,14 @@ interface ModelListTableColumnDefinition {
  *
  * <script setup>
  * import { computed } from 'vue';
+ * import { DateTime } from 'luxon';
  * const habitatsDisplayComponentBinder = (item) => computed(() => ({
  *  items: item.habitats.map((h) => ({ text: h, value: h })),
+ * }));
+ * const createdAtDisplayComponentBinder = (item) => computed(() => ({
+ *  input: item.created_at,
+ *  inputFormat: 'yyyy-MM-ddTHH:mm:ss.ZZZZ',
+ *  outputFormat: DateTime.DATETIME_SHORT
  * }));
  * const columns = [
  *  { property: 'id', title: 'ID' },
@@ -100,7 +106,7 @@ interface ModelListTableColumnDefinition {
  *  { property: 'habitats', title: 'Habitats', searchType: 'multiselect', displayComponent: 'VPChipGroup', displayComponentBinder: habitatsDisplayComponentBinder },
  *  { property: 'extinct', title: 'Extinct' },
  *  { property: 'endangered', title: 'Endangered' },
- *  { property: 'created_at', title: 'Added', alignment: 'end' },
+ *  { property: 'created_at', title: 'Added', alignment: 'end', displayComponent: 'VPDateTime', displayComponentBinder: createdAtDisplayComponentBinder },
  * ];
  * <\/script>
  */

@@ -9,8 +9,8 @@ import { DateTime } from "luxon";
 import type { PropType } from "vue";
 import type { Zone } from "luxon";
 /**
- * A wrapper around the [Luxon DateTime toFormat method](https://moment.github.io/luxon/api-docs/index.html#datetimetoformat) which renders an input value
- * as a formatted date string according to the options.
+ * A wrapper around the [Luxon DateTime toLocaleString method](https://moment.github.io/luxon/api-docs/index.html#datetimetolocalestring) which renders an input value
+ * as a formatted date string according to the options. When the `input` property is not provided, the current date and time is returned.
  *
  * @module @jakguru/vueprint-components/components/formatters/VPDateTime
  * @example

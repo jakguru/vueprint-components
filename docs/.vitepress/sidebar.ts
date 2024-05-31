@@ -22,6 +22,10 @@ export default [
           {
             "text": "VPDateTime",
             "link": "/components/formatters/VPDateTime"
+          },
+          {
+            "text": "VPNumeral",
+            "link": "/components/formatters/VPNumeral"
           }
         ],
         "collapsed": true
