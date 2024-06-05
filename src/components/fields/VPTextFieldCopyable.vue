@@ -54,7 +54,7 @@ const makeProps = (additional: any = {}) => {
  * ::: info Important Note
  * This component is a wrapper around the `v-text-field` component. It is recommended to refer to the [Vuetify documentation](https://vuetifyjs.com/en/api/v-text-field/) for more information on the available props and events.
  * :::
- * 
+ *
  * ::: info Tip
  * This component is compatible with the [Vuetify Global Configuration](https://vuetifyjs.com/en/features/global-configuration/) API.
  * :::
@@ -98,7 +98,7 @@ export default defineComponent({
   emits: [
     /**
      * Emitted when the value is successfully copied to the clipboard
-     * 
+     *
      * @property {string} value - The value that was copied
      */
     "copied",
@@ -106,7 +106,8 @@ export default defineComponent({
      * Emitted when the value fails to be copied to the clipboard
      */
     "copy-failed",
-    ...Object.keys({ ...VTextField.emits })],
+    ...Object.keys({ ...VTextField.emits }),
+  ],
   setup(props, { emit }) {
     const value = computed(() => props.value);
     const { copy: doCopy, copied, isSupported, text } = useClipboard();

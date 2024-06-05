@@ -8,6 +8,9 @@ import { mkdirp } from "mkdirp";
 import { parse } from "vue-docgen-api";
 import { kebabCase } from "change-case";
 import mustache from "mustache";
+import * as td from "typedoc";
+
+// import { inspect } from "util";
 
 mustache.escape = (text: string) => text;
 
@@ -166,8 +169,270 @@ const listDocumentableFiles = async (
   return ret;
 };
 
+const escapePipeForMarkdownTable = (str: string) => {
+  return str.replace(/\|/g, "\\|");
+}
+
+const makeFunctionExampleFromSignatureReflection = (
+  s: td.Models.SignatureReflection,
+) => {
+  let ret = "";
+  ret += `${s.name}`;
+  if (s.typeParameters) {
+    ret += `<${s.typeParameters
+      .map((p) => {
+        let pstr = "";
+        pstr += p.name;
+        if (p.default) {
+          pstr += ` = ${p.default}`;
+        }
+        return pstr;
+      })
+      .join(", ")}>`;
+  }
+  ret += `(`;
+  if (s.parameters) {
+    ret += s.parameters
+      .map((p) => {
+        let pstr = "";
+        if (p.flags?.isRest) {
+          pstr += `...`;
+        }
+        pstr += p.name;
+        if (p.flags?.isOptional) {
+          pstr += `?`;
+        }
+        pstr += `: ${p.type}`;
+        return pstr;
+      })
+      .join(", ");
+  }
+  ret += `): ${s.type}`;
+  return ret;
+};
+
 const getDocForTypescript = async (source: string) => {
-  return `# ${source}`;
+  const app = await td.Application.bootstrap({
+    entryPoints: [source],
+    name: "VuePrint Components",
+    includeVersion: false,
+    disableSources: false,
+    sourceLinkTemplate:
+      "https://github.com/jakguru/vueprint-components/blob/{gitRevision}/{path}#L{line}",
+    emit: "none",
+    hideGenerator: true,
+    visibilityFilters: {
+      protected: false,
+      private: false,
+      inherited: true,
+      external: true,
+      "@alpha": false,
+      "@beta": false,
+    },
+    sort: [
+      "instance-first",
+      "required-first",
+      "kind",
+      "visibility",
+      "alphabetical",
+    ],
+    readme: "none",
+    excludeNotDocumented: false,
+    excludeExternals: false,
+    excludePrivate: true,
+    excludeProtected: true,
+    excludeInternal: false,
+    excludeReferences: false,
+    externalSymbolLinkMappings: {},
+  });
+  const project = await app.convert();
+  if (!project) {
+    return `# ${source}`;
+  }
+  const module = source
+    .replace(SRC_DIR, project.packageName!)
+    .replace(/\.ts$/, "");
+  // const dbg = inspect(project, { depth: 10 });
+  // const dbgPath = join(BASE_DIR, "debug.txt");
+  // await writeFile(dbgPath, dbg);
+  let mkdown = "";
+  mkdown += `# ${module}\n\n`;
+
+  const realExports = new Set();
+  const typeExports = new Set();
+  const realReflectionKinds = [
+    td.ReflectionKind.Variable,
+    td.ReflectionKind.Function,
+    td.ReflectionKind.Class,
+    td.ReflectionKind.Enum,
+  ];
+  project.children!.forEach((child) => {
+    if (realReflectionKinds.includes(child.kind)) {
+      realExports.add(child.name);
+    } else {
+      typeExports.add(child.name);
+    }
+  });
+  if (realExports.size || typeExports.size) {
+    mkdown += `\`\`\`typescript\n`;
+    if (realExports.size) {
+      mkdown += `import { ${[...realExports].join(", ")} } from '${module}';\n`;
+    }
+    if (typeExports.size) {
+      mkdown += `import type { ${[...typeExports].join(", ")} } from '${module}';\n`;
+    }
+  }
+  mkdown += `\`\`\`\n\n`;
+  project.groups!.forEach((group) => {
+    mkdown += `## ${group.title}\n\n`;
+    group.children.forEach((child) => {
+      mkdown += `### \`${child.name}\`\n\n`;
+      if (child.type) {
+        mkdown += `\`\`\`typescript\n${child.type}\n\`\`\`\n\n`;
+      }
+      if (child.flags) {
+        mkdown += `<div class="mb-2"></div>\n\n`;
+        child.flags.forEach((flag) => {
+          mkdown += `<v-chip size="small" label>${flag}</v-chip>`;
+        });
+        mkdown += "\n\n";
+      }
+      if (child.comment) {
+        if (child.comment.summary) {
+          child.comment.summary.forEach((summary) => {
+            switch (summary.kind) {
+              case "text":
+                mkdown += `${summary.text}\n\n`;
+                break;
+
+              default:
+                console.log(summary);
+                break;
+            }
+          });
+        }
+        if (child.comment.blockTags) {
+          child.comment.blockTags.forEach((tag) => {
+            console.log(tag);
+          });
+        }
+        // mkdown += `${child.comment.summary}\n\n`;
+      }
+      if (child.children) {
+        mkdown += `#### Properties\n\n`;
+        mkdown += `| Name | Type | Description |\n`;
+        mkdown += `| ---- | ---- | ----------- |\n`;
+        child.children.forEach((p) => {
+          const info: any = {
+            name: `\`${p.name}\``,
+            type: p.type?.toString() || "",
+          };
+          if (p.comment) {
+            if (p.comment.summary) {
+              info.description = p.comment.summary
+                .map((s) => {
+                  switch (s.kind) {
+                    case "text":
+                      return s.text;
+                    default:
+                      console.log("p.comment.summary", s);
+                      return "";
+                  }
+                })
+                .join(" ");
+            }
+          }
+          if (!info.description) {
+            info.description = "";
+          }
+          mkdown += `| ${info.name} | ${info.type} | ${info.description} |\n`;
+        });
+      }
+      if (child.signatures) {
+        mkdown += `#### Signatures\n\n`;
+        child.signatures.forEach((s) => {
+          if (s.comment) {
+            if (s.comment.summary) {
+              mkdown += `${s.comment.summary
+                .map((s) => {
+                  switch (s.kind) {
+                    case "text":
+                      return s.text;
+                    default:
+                      console.log("s.comment.summary", s);
+                      return "";
+                  }
+                })
+                .join(" ")}\n\n`;
+            }
+          }
+          mkdown += `\`\`\`typescript\n${makeFunctionExampleFromSignatureReflection(s)}\n\`\`\`\n\n`;
+          if (s.typeParameters) {
+            mkdown += `#### Type Variables\n\n`;
+            mkdown += `| Name | Type | Default | Description |\n`;
+            mkdown += `| ---- | ---------- | ------- | ------- |\n`;
+            s.typeParameters.forEach((p) => {
+              const info: any = {
+                name: `\`${p.name}\``,
+                type: p.type ? `\`${p.type}\`` : "",
+                default: p.default ? `\`${p.default}\`` : "",
+              };
+              if (p.comment) {
+                if (p.comment.summary) {
+                  info.description = p.comment.summary
+                    .map((s) => {
+                      switch (s.kind) {
+                        case "text":
+                          return s.text;
+                        default:
+                          console.log("p.comment.summary", s);
+                          return "";
+                      }
+                    })
+                    .join(" ");
+                }
+              }
+              if (!info.description) {
+                info.description = "";
+              }
+              mkdown += `| ${escapePipeForMarkdownTable(info.name)} | ${escapePipeForMarkdownTable(info.type)} | ${escapePipeForMarkdownTable(info.default)} | ${escapePipeForMarkdownTable(info.description) } |\n`;
+            });
+          }
+          if (s.parameters) {
+            mkdown += `#### Parameters\n\n`;
+            mkdown += `| Name | Type | Description |\n`;
+            mkdown += `| ---- | ---- | ----------- |\n`;
+            s.parameters.forEach((p) => {
+              const info: any = {
+                name: `\`${p.name}\``,
+                type: p.type ? `\`${p.type}\`` : "",
+              };
+              if (p.comment) {
+                if (p.comment.summary) {
+                  info.description = p.comment.summary
+                    .map((s) => {
+                      switch (s.kind) {
+                        case "text":
+                          return s.text;
+                        default:
+                          console.log("p.comment.summary", s);
+                          return "";
+                      }
+                    })
+                    .join(" ");
+                }
+              }
+              if (!info.description) {
+                info.description = "";
+              }
+              mkdown += `| ${escapePipeForMarkdownTable(info.name)} | ${escapePipeForMarkdownTable(info.type)} | ${escapePipeForMarkdownTable(info.description)} |\n`;
+            });
+          }
+        });
+      }
+    });
+  });
+  return mkdown;
 };
 
 const getDocForVue = async (source: string) => {

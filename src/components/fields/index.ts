@@ -1,3 +1,4 @@
 import VPPasswordField from "./VPPasswordField.vue";
 import VPTextFieldCopyable from "./VPTextFieldCopyable.vue";
-export { VPPasswordField, VPTextFieldCopyable };
+import VPPhoneField from "./VPPhoneField.vue";
+export { VPPasswordField, VPTextFieldCopyable, VPPhoneField };
