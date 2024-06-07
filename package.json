@@ -50,7 +50,7 @@
     "vite-plugin-vuetify": "^2.0.3",
     "vitepress": "^1.1.4",
     "vue-docgen-api": "^4.78.0",
-    "vue-eslint-parser": "^9.4.2",
+    "vue-eslint-parser": "^9.4.3",
     "vue-tsc": "^1.8.3",
     "yaml": "^2.4.2"
   },
