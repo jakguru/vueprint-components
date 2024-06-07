@@ -167,6 +167,9 @@ export default defineConfig({
       },
       dedupe: ["vue", "vuetify", "@jakguru/vueprint"], // avoid error when using dependencies that also use Vue
     },
+    ssr: {
+      noExternal: [ /\.css$/, /^vuetify/ ],
+    },
   },
   vue: {
     template: {
